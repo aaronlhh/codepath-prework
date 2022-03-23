@@ -1,5 +1,5 @@
 // Global Variables
-var pattern = [2, 2, 4, 3, 2, 1, 2, 4];
+var pattern = [1,2,3,4,5,6,7,8];
 var progress = 0; 
 var gamePlaying = false;
 var tonePlaying = false;
@@ -7,8 +7,8 @@ var volume = 0.5;  //must be between 0.0 and 1.0
 var guessCounter = 0;
 
 // global constants
-const clueHoldTime = 1000; //how long to hold each clue's light/sound
-const cluePauseTime = 333; //how long to pause in between clues
+const clueHoldTime = 500; //how long to hold each clue's light/sound
+const cluePauseTime = 250; //how long to pause in between clues
 const nextClueWaitTime = 1000; //how long to wait before starting playback of the clue sequence
 
 
@@ -99,6 +99,8 @@ function playClueSequence(){
   context.resume()
   let delay = nextClueWaitTime; //set delay to initial wait time
   for(let i=0;i<=progress;i++){ // for each clue that is revealed so far
+    // each time of playing, modify the corresponding place to be a random button number
+    pattern[i] = Math.floor(Math.random()*8)+1;
     console.log("play single clue: " + pattern[i] + " in " + delay + "ms")
     setTimeout(playSingleClue,delay,pattern[i]) // set a timeout to play that clue
     delay += clueHoldTime 
