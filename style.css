@@ -64,7 +64,7 @@ button {
 }
 
 #button8 {
-  background: mintcream;
+  background: lightgray;
 }
 
 
@@ -100,5 +100,5 @@ button {
 }
 
 #button8:active, #button8.lit  {
-  background: seashell;
+  background: white;
 }
