@@ -3,6 +3,7 @@
 body {
   font-family: helvetica, arial, sans-serif;
   margin: 2em;
+  width: 100%;
   background-color: slategrey;
   color: white;
 }
@@ -14,8 +15,15 @@ h1 {
 
 button {
   padding: 10px;
+  margin-bottom: 10px;
   border-radius: 10px
 }
+
+/* make buttons align on a single row */
+div#gameButtonArea {
+  width: 100%;
+}
+
 
 /* #gameButtonArea > button targets any button 
     elements that are the child of an element with 
@@ -23,9 +31,9 @@ button {
 
 
 #gameButtonArea > button {
-  width: 200px;
+  width: 10.8%;
   height: 200px;
-  margin: 2px;
+  margin: 0;
 }
 
 
