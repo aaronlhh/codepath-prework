@@ -33,7 +33,7 @@ button {
   display: none;
 }
 
-/* assign colors to four big buttons */
+/* assign colors to eight big buttons */
 
 #button1 {
   background: lightgreen;
@@ -50,6 +50,23 @@ button {
 #button4 {
   background: lightyellow;
 }
+
+#button5 {
+  background: mediumturquoise;
+}
+
+#button6 {
+  background: peachpuff;
+}
+
+#button7 {
+  background: plum;
+}
+
+#button8 {
+  background: mintcream;
+}
+
 
 /* adding functionality of changing colors after clicking
     or once it has class attribute called lit */
@@ -68,4 +85,20 @@ button {
 
 #button4:active, #button4.lit {
   background: yellow;
+}
+
+#button5:active, #button5.lit  {
+  background: darkseagreen;
+}
+
+#button6:active, #button6.lit {
+  background: sandybrown;
+}
+
+#button7:active, #button7.lit  {
+  background: mediumorchid;
+}
+
+#button8:active, #button8.lit  {
+  background: seashell;
 }
