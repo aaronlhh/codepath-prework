@@ -6,6 +6,8 @@ var tonePlaying = false;
 var volume = 0.5;  //must be between 0.0 and 1.0
 var guessCounter = 0;
 var mistakeNum = 0;   // keeps track of the number of mistakes
+var timeSoFar = 10;     // keeps track of the time for player to begin each try
+var interval;
 
 // global constants
 const clueHoldTime = 500; //how long to hold each clue's light/sound
@@ -30,6 +32,7 @@ function stopGame(){
   document.getElementById("hint").innerHTML = "Repeat the pattern back to win the game!";
   document.getElementById("startBtn").classList.remove("hidden");
   document.getElementById("stopBtn").classList.add("hidden");
+  stopCount();
 }
 
 
@@ -110,6 +113,7 @@ function playClueSequence(){
     delay += clueHoldTime 
     delay += cluePauseTime;
   }
+  setTimeout(startCount, delay-clueHoldTime-cluePauseTime);
 }
 
 
@@ -139,6 +143,7 @@ function guess(btn){
         winGame();
       }else{
         progress++;
+        stopCount();
         playClueSequence();
       }
       
@@ -154,9 +159,42 @@ function guess(btn){
     document.getElementById("hint").innerHTML = "Guess wrong! Please try the whole sequence again! mistakeNum = " + (mistakeNum+1);
     guessCounter = 0;
     mistakeNum++;
-    
+    stopCount();
+    startCount();
   }else{
     // not guessing right for three times
     loseGame();
   }
+}
+
+// increment time count for each turn
+function timeCount(){
+  if(!gamePlaying){
+    return;
+  }
+  
+  document.getElementById("counter").innerHTML = "CountDown: " + --timeSoFar
+  
+  if(mistakeNum < 3 && timeSoFar == 0){
+    console.log("mistakeNum = " + (mistakeNum+1));
+    document.getElementById("hint").innerHTML = "Guess wrong! Please try the whole sequence again! mistakeNum = " + (mistakeNum+1);
+    guessCounter = 0;
+    mistakeNum++;
+    stopCount();
+  }else if(timeSoFar == 0 && mistakeNum >= 3){
+    loseGame();
+  }
+}
+
+function startCount(){
+  interval = setInterval(timeCount, 1000);
+}
+
+function stopCount(){
+  clearInterval(interval);
+  document.getElementById("counter").innerHTML = "CountDown: 10";
+  if(mistakeNum < 3 && gamePlaying && timeSoFar == 0){
+    startCount();
+  }
+  timeSoFar = 10;
 }
