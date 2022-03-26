@@ -45,9 +45,10 @@ const freqMap = {
   8: 523.2511
 }
 function playTone(btn,len){ 
-  o.frequency.value = freqMap[btn]
-  g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
-  context.resume()
+  // o.frequency.value = freqMap[btn]
+  // g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
+  // context.resume()
+  document.getElementById(btn).play();
   tonePlaying = true
   setTimeout(function(){
     stopTone()
@@ -55,15 +56,16 @@ function playTone(btn,len){
 }
 function startTone(btn){
   if(!tonePlaying){
-    context.resume()
-    o.frequency.value = freqMap[btn]
-    g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
-    context.resume()
+    // context.resume()
+    // o.frequency.value = freqMap[btn]
+    // g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
+    // context.resume()
+    document.getElementById(btn).play();
     tonePlaying = true
   }
 }
 function stopTone(){
-  g.gain.setTargetAtTime(0,context.currentTime + 0.05,0.025)
+  // g.gain.setTargetAtTime(0,context.currentTime + 0.05,0.025)
   tonePlaying = false
   document.getElementById("hint").innerHTML = "Repeat the pattern back to win the game!";
 }
