@@ -13,7 +13,7 @@ h1 {
   font-family: verdana, arial, sans-serif; 
 }
 
-button {
+#startBtn, #stopBtn {
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 10px
@@ -31,9 +31,11 @@ div#gameButtonArea {
 
 
 #gameButtonArea > button {
-  width: 10.8%;
+  width: 12.5%;
   height: 200px;
-  margin: 0;
+  margin: 0px -3px;
+  border: solid;
+/*   background: white; */
 }
 
 
@@ -71,9 +73,6 @@ div#gameButtonArea {
   background: plum;
 }
 
-#button8 {
-  background: lightgray;
-}
 
 
 /* adding functionality of changing colors after clicking
@@ -107,6 +106,6 @@ div#gameButtonArea {
   background: mediumorchid;
 }
 
-#button8:active, #button8.lit  {
-  background: white;
-}
+
+
+
