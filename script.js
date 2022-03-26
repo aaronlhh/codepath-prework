@@ -27,7 +27,7 @@ function startGame(){
 
 function stopGame(){
   gamePlaying = false;
-  
+  document.getElementById("hint").innerHTML = "Repeat the pattern back to win the game!";
   document.getElementById("startBtn").classList.remove("hidden");
   document.getElementById("stopBtn").classList.add("hidden");
 }
@@ -66,8 +66,8 @@ function startTone(btn){
 }
 function stopTone(){
   // g.gain.setTargetAtTime(0,context.currentTime + 0.05,0.025)
-  tonePlaying = false
   document.getElementById("hint").innerHTML = "Repeat the pattern back to win the game!";
+  tonePlaying = false
 }
 
 // Page Initialization
