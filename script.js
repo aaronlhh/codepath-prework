@@ -8,6 +8,10 @@ var guessCounter = 0;
 var mistakeNum = 0;   // keeps track of the number of mistakes
 var timeSoFar = 10;     // keeps track of the time for player to begin each try
 var interval;
+var regularSmileyFace = `<span><img src="https://cdn.glitch.global/7dc64b04-718e-4e47-9fb0-22cd16a13130/Screen%20Shot%202022-03-25%20at%2021.35.36.png?v=1648269383946"
+                   width="70px" ></span>`
+var clickedFace = `<span><img src="https://cdn.glitch.global/7dc64b04-718e-4e47-9fb0-22cd16a13130/Screen%20Shot%202022-03-25%20at%2021.35.43.png?v=1648269385258"
+                   width="70px" ></span>`
 
 // global constants
 const clueHoldTime = 500; //how long to hold each clue's light/sound
@@ -36,6 +40,9 @@ function stopGame(){
   clearInterval(interval);
   timeSoFar = 10;
   document.getElementById("counter").innerHTML = "CountDown: " + timeSoFar + ", Mistake: " + mistakeNum;
+  for(var i = 1; i <= 7; i++){
+    document.getElementById("button"+i).innerHTML = regularSmileyFace ;
+  }
 }
 
 
@@ -55,9 +62,10 @@ function playTone(btn,len){
   // g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
   // context.resume()
   document.getElementById(btn).play();
+  document.getElementById("button"+btn).innerHTML = clickedFace ;
   tonePlaying = true
   setTimeout(function(){
-    stopTone()
+    stopTone(btn)
   },len)
 }
 function startTone(btn){
@@ -67,12 +75,15 @@ function startTone(btn){
     // g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
     // context.resume()
     document.getElementById(btn).play();
+    document.getElementById("button"+btn).innerHTML = clickedFace ;
     tonePlaying = true
+    guess(btn);
   }
 }
-function stopTone(){
+function stopTone(btn){
   // g.gain.setTargetAtTime(0,context.currentTime + 0.05,0.025)
   tonePlaying = false
+  document.getElementById("button"+btn).innerHTML = regularSmileyFace ;
 }
 
 // Page Initialization
@@ -135,10 +146,10 @@ function winGame(){
 
 
 function guess(btn){
-  console.log("user guessed: " + btn);
   if(!gamePlaying){
     return;
   }
+  console.log("user guessed: " + btn);
   
   // add game logic here
   if(pattern[guessCounter] == btn){
@@ -246,3 +257,5 @@ function replay(){
   // start timecounting again
   setTimeout(startCount, delay-clueHoldTime-cluePauseTime);
 }
+
+

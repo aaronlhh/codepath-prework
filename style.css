@@ -31,12 +31,13 @@ div#gameButtonArea {
 
 
 #gameButtonArea > button {
-  width: 12.5%;
-  height: 200px;
+/*   width: 12.5%; */
+  height: 100px;
+  width: 100px;
   margin: 0px -3px;
   border: solid;
-/*   background: white; */
 }
+
 
 
 .hidden {
