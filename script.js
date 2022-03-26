@@ -5,6 +5,7 @@ var gamePlaying = false;
 var tonePlaying = false;
 var volume = 0.5;  //must be between 0.0 and 1.0
 var guessCounter = 0;
+var mistakeNum = 0;   // keeps track of the number of mistakes
 
 // global constants
 const clueHoldTime = 500; //how long to hold each clue's light/sound
@@ -64,6 +65,7 @@ function startTone(btn){
 function stopTone(){
   g.gain.setTargetAtTime(0,context.currentTime + 0.05,0.025)
   tonePlaying = false
+  document.getElementById("hint").innerHTML = "Repeat the pattern back to win the game!";
 }
 
 // Page Initialization
@@ -100,7 +102,7 @@ function playClueSequence(){
   let delay = nextClueWaitTime; //set delay to initial wait time
   for(let i=0;i<=progress;i++){ // for each clue that is revealed so far
     // each time of playing, modify the corresponding place to be a random button number
-    pattern[i] = Math.floor(Math.random()*8)+1;
+    pattern[i] = Math.floor(Math.random()*7)+1;
     console.log("play single clue: " + pattern[i] + " in " + delay + "ms")
     setTimeout(playSingleClue,delay,pattern[i]) // set a timeout to play that clue
     delay += clueHoldTime 
@@ -143,9 +145,16 @@ function guess(btn){
       guessCounter++;
     }
     
+  }else if(mistakeNum < 3){
+    // if player makes mistakes for less than three times, 
+    //   retry the sequence
+    console.log("mistakeNum = " + (mistakeNum+1));
+    document.getElementById("hint").innerHTML = "Guess wrong! Please try the whole sequence again! mistakeNum = " + (mistakeNum+1);
+    guessCounter = 0;
+    mistakeNum++;
     
   }else{
-    // not guessing right
+    // not guessing right for three times
     loseGame();
   }
 }
