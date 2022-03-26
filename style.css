@@ -13,7 +13,7 @@ h1 {
   font-family: verdana, arial, sans-serif; 
 }
 
-#startBtn, #stopBtn {
+button {
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 10px

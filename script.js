@@ -23,7 +23,7 @@ function startGame(){
   // swap the Start and Stop buttons
   document.getElementById("startBtn").classList.add("hidden");
   document.getElementById("stopBtn").classList.remove("hidden");
-  
+  mistakeNum = 0;
   playClueSequence();
 }
 
@@ -32,7 +32,10 @@ function stopGame(){
   document.getElementById("hint").innerHTML = "Repeat the pattern back to win the game!";
   document.getElementById("startBtn").classList.remove("hidden");
   document.getElementById("stopBtn").classList.add("hidden");
-  stopCount();
+  mistakeNum = 0;
+  clearInterval(interval);
+  timeSoFar = 10;
+  document.getElementById("counter").innerHTML = "CountDown: " + timeSoFar + ", Mistake: " + mistakeNum;
 }
 
 
@@ -69,7 +72,6 @@ function startTone(btn){
 }
 function stopTone(){
   // g.gain.setTargetAtTime(0,context.currentTime + 0.05,0.025)
-  document.getElementById("hint").innerHTML = "Repeat the pattern back to win the game!";
   tonePlaying = false
 }
 
@@ -102,6 +104,9 @@ function playSingleClue(btn){
 }
 
 function playClueSequence(){
+  if(!gamePlaying){
+    return;
+  }
   guessCounter = 0;
   context.resume()
   let delay = nextClueWaitTime; //set delay to initial wait time
@@ -137,6 +142,8 @@ function guess(btn){
   
   // add game logic here
   if(pattern[guessCounter] == btn){
+    
+    document.getElementById("hint").innerHTML = "Repeat the pattern back to win the game!";
     if(guessCounter == progress){
       // win the game
       if(progress == pattern.length-1){
@@ -155,10 +162,10 @@ function guess(btn){
   }else if(mistakeNum < 3){
     // if player makes mistakes for less than three times, 
     //   retry the sequence
-    console.log("mistakeNum = " + (mistakeNum+1));
-    document.getElementById("hint").innerHTML = "Guess wrong! Please try the whole sequence again! mistakeNum = " + (mistakeNum+1);
-    guessCounter = 0;
     mistakeNum++;
+    console.log("mistakeNum = " + mistakeNum);
+    document.getElementById("hint").innerHTML = "Guess wrong! Please try the whole sequence again!";
+    guessCounter = 0;
     stopCount();
     startCount();
   }else{
@@ -167,34 +174,75 @@ function guess(btn){
   }
 }
 
+
+
+
 // increment time count for each turn
 function timeCount(){
   if(!gamePlaying){
     return;
   }
   
-  document.getElementById("counter").innerHTML = "CountDown: " + --timeSoFar
+  timeSoFar--;
+  document.getElementById("counter").innerHTML = "CountDown: " + timeSoFar + ", Mistake: " + mistakeNum;
   
-  if(mistakeNum < 3 && timeSoFar == 0){
-    console.log("mistakeNum = " + (mistakeNum+1));
-    document.getElementById("hint").innerHTML = "Guess wrong! Please try the whole sequence again! mistakeNum = " + (mistakeNum+1);
-    guessCounter = 0;
+  if(mistakeNum < 3 && timeSoFar == -1){
     mistakeNum++;
+    console.log("mistakeNum = " + mistakeNum);
+    document.getElementById("hint").innerHTML = "Guess wrong! Please try the whole sequence again!";
+    guessCounter = 0;
     stopCount();
-  }else if(timeSoFar == 0 && mistakeNum >= 3){
+  }else if(timeSoFar == -1 && mistakeNum >= 3){
     loseGame();
   }
 }
 
 function startCount(){
+  if(!gamePlaying){
+    return;
+  }
   interval = setInterval(timeCount, 1000);
 }
 
 function stopCount(){
   clearInterval(interval);
-  document.getElementById("counter").innerHTML = "CountDown: 10";
-  if(mistakeNum < 3 && gamePlaying && timeSoFar == 0){
+  if(mistakeNum <= 3 && gamePlaying && timeSoFar == -1){
     startCount();
   }
   timeSoFar = 10;
+  document.getElementById("counter").innerHTML = "CountDown: " + timeSoFar + ", Mistake: " + mistakeNum;
+}
+
+
+
+// replay the sequence again and it cost one mistake time
+function replay(){
+  if(!gamePlaying){
+    return;
+  }
+  if(mistakeNum == 3){
+    document.getElementById("hint").innerHTML = "Cannot replay with mistakeNum = 3";
+    return;
+  }
+  
+  stopCount();
+  
+  // increment the mistake numbers
+  mistakeNum++;
+  console.log("mistakeNum = " + mistakeNum);
+  document.getElementById("hint").innerHTML = "Replay";
+  guessCounter = 0;
+  
+  // resume the sequence
+  context.resume()
+  let delay = nextClueWaitTime; //set delay to initial wait time
+  for(let i=0;i<=progress;i++){ // for each clue that is revealed so far
+    console.log("replay single clue: " + pattern[i] + " in " + delay + "ms")
+    setTimeout(playSingleClue,delay,pattern[i]) // set a timeout to play that clue
+    delay += clueHoldTime 
+    delay += cluePauseTime;
+  }
+  
+  // start timecounting again
+  setTimeout(startCount, delay-clueHoldTime-cluePauseTime);
 }
