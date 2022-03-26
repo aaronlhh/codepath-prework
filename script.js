@@ -14,7 +14,7 @@ var clickedFace = `<span><img src="https://cdn.glitch.global/7dc64b04-718e-4e47-
                    width="70px" ></span>`
 
 // global constants
-const clueHoldTime = 500; //how long to hold each clue's light/sound
+const clueHoldTime = 400; //how long to hold each clue's light/sound
 const cluePauseTime = 250; //how long to pause in between clues
 const nextClueWaitTime = 1000; //how long to wait before starting playback of the clue sequence
 
@@ -39,7 +39,9 @@ function stopGame(){
   mistakeNum = 0;
   clearInterval(interval);
   timeSoFar = 10;
-  document.getElementById("counter").innerHTML = "CountDown: " + timeSoFar + ", Mistake: " + mistakeNum;
+  progress = 0;
+  guessCounter = 0;
+  document.getElementById("counter").innerHTML = "CountDown: " + timeSoFar + ", Level: " + (progress+1) + ", Mistake: " + mistakeNum;
   for(var i = 1; i <= 7; i++){
     document.getElementById("button"+i).innerHTML = regularSmileyFace ;
   }
@@ -195,7 +197,7 @@ function timeCount(){
   }
   
   timeSoFar--;
-  document.getElementById("counter").innerHTML = "CountDown: " + timeSoFar + ", Mistake: " + mistakeNum;
+  document.getElementById("counter").innerHTML = "CountDown: " + timeSoFar + ", Level: " + (progress+1) + ", Mistake: " + mistakeNum;
   
   if(mistakeNum < 3 && timeSoFar == -1){
     mistakeNum++;
@@ -221,7 +223,7 @@ function stopCount(){
     startCount();
   }
   timeSoFar = 10;
-  document.getElementById("counter").innerHTML = "CountDown: " + timeSoFar + ", Mistake: " + mistakeNum;
+  document.getElementById("counter").innerHTML = "CountDown: " + timeSoFar + ", Level: " + (progress+1) + ", Mistake: " + mistakeNum;
 }
 
 
